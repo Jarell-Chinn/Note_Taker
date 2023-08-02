@@ -49,11 +49,29 @@ router.post("/", (req, res) => {
   });
 });
 
-// router.delete("", (req, res) => {
-// Read file
-// parse into array
-// filter out note with the Id that would be passed in
-// write to file
-// });
+router.delete("/:id", (req, res) => {
+  fs.readFile("./db/db.json", "utf8", (err, data) => {
+    if (err) {
+      console.error(err);
+      return res
+        .status(500)
+        .json({ error: "Something went wrong reading the notes. " });
+    }
+
+    const notes = JSON.parse(data);
+    const noteId = req.params.id;
+
+    // filter out the note with the given id
+    const updatedNotes = notes.filter((note) => note.id !== noteId);
+
+    fs.writeFile("./db/db.json", JSON.stringify(updatedNotes), (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Was not able to delete note" });
+      }
+      res.json({ message: "Note deleted successfully" });
+    });
+  });
+});
 
 module.exports = router;
