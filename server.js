@@ -6,7 +6,7 @@ const routes = require("./routes/index");
 // GET /api/notes
 // POST api/notes
 
-const PORT = 3001;
+const PORT = 3000;
 
 const app = express();
 
@@ -15,23 +15,23 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use("/api", routes);
 
-app.get("/hello", (req, res) => {
-  res.send("wwww");
-});
+// app.get("/hello", (req, res) => {
+//   res.send("wwww");
+// });
 
 // GET /notes` should return the `notes.html` file.
-
-app.get("", (req, res) => {
-  res.sendFile();
+// html routes
+app.get("/notes", (req, res) => {
+  res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
 //  `GET *` should return the `index.html` file.
 
-app.get("", (req, res) => {
-  res.sendFile("");
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// html routes
+// starting server
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`);
 });
